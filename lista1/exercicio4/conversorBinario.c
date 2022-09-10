@@ -51,8 +51,13 @@ void destroy(pilhaDinamica *p){
     }
 }
 
-int binario(){
-
+void show(pilhaDinamica p){
+    no *aux;
+    aux = p.topo;
+    while(aux != NULL){
+        printf("%d ", aux->no);
+        aux = aux->prox;
+    }
 }
 
 int main(void){
@@ -61,5 +66,15 @@ int main(void){
     int n;
     printf("Digite um numero: ");
     scanf("%d", &n);
-
+    if(n <= 0){
+        printf("Numero invalido");
+    }
+    else{
+        while(n != 0){
+            push(&p, n%2);
+            n = n/2;
+        }
+    }
+    show(p);
+    return 0;
 }
