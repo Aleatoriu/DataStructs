@@ -3,7 +3,6 @@
 #include <stdbool.h>
 #include <string.h>
 
-
 typedef struct no_st{
     int no;
     struct no_st* prox;
@@ -52,41 +51,15 @@ void destroy(pilhaDinamica *p){
     }
 }
 
-void show(pilhaDinamica p){
-    no *aux;
-    aux = p.topo;
-    while(aux != NULL){
-        printf("%d ", aux->no);
-        aux = aux->prox;
-    }
-}
+int binario(){
 
-int fibonacci(int n){
-    if(n== 1){
-        return 0;
-    }
-    if(n==2){
-        return 1;
-    }
-    return fibonacci(n-1) + fibonacci(n-2);
 }
 
 int main(void){
-    pilhaDinamica stack;
-    init(&stack);
+    pilhaDinamica p;
+    init(&p);
     int n;
-
-    printf("Digite um valor para a sequencia de fibonacci ente 5 e 20:");
+    printf("Digite um numero: ");
     scanf("%d", &n);
-    if (n < 5 || n > 20){
-        printf("Valor invalido");
-        return 0;
-    }
-    for(int i = 1; i <= n; i++){
-        push(&stack, fibonacci(i));
-    }
-    printf("A quantidade será %d\n", size(stack));
-    show(stack);
-    printf("\n");
-    return 0;
+
 }
