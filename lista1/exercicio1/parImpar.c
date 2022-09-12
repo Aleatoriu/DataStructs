@@ -62,21 +62,21 @@ int main(int argc, char *argv[])
     pilha pilhaPar, pilhaImpar;
     Numero n;
     FILE *arq;
-    init(&pilhaPar);
-    init(&pilhaImpar);
+    init(&pilhaPar);        //Inicializa a pilha de numeros pares
+    init(&pilhaImpar);      //Inicializa a pilha de numeros impares
 
-    arq = fopen(argv[1],"r");
+    arq = fopen(argv[1],"r");    //Abre o arquivo para leitura
     if(arq == NULL){
         printf("Erro ao abrir o arquivo!");
         return 0;
     }
-    for(int i = 0; i < MAX; i++){
-        fscanf(arq,"%d",&n.numero);
-        if(n.numero % 2 == 0){
-            push(&pilhaPar,n);
+    for(int i = 0; i < MAX; i++){               //Percorre o arquivo
+        fscanf(arq,"%d",&n.numero);               
+        if(n.numero % 2 == 0){                  //Verifica se o numero é par
+            push(&pilhaPar,n);                  //Empilha o numero na pilha de pares
         }
         else{
-            push(&pilhaImpar,n);
+            push(&pilhaImpar,n);                //Empilha o numero na pilha de impares
         }
     }                
     fclose(arq);
