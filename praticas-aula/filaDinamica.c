@@ -14,7 +14,7 @@ typedef struct filaDinamica_st {
     int qtd;
 } FilaDinamica_t;
 
-void init(){
+void init(FilaDinamica_t *fila){
     FilaDinamica_t *fila = (FilaDinamica_t *) malloc(sizeof(FilaDinamica_t));
     fila->inicio = NULL;
     fila->fim = NULL;
@@ -29,8 +29,7 @@ void isEmpty(FilaDinamica_t *fila){
     }
 }
 
-void push(){
-    int valor;
+void push(FilaDinamica_t *fila, int valor){
     printf("Digite o valor a ser inserido: ");
     scanf("%d", &valor);
     No *novo = (No *) malloc(sizeof(No));
