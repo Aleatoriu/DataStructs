@@ -7,23 +7,23 @@
 typedef struct no_st{
     int no;
     struct no_st* prox;
-}no;
+}no;                          //cria a estrutura do nó
 
 typedef struct pilhaDinamica_st{
     no *topo;
-    int qntd;
-}pilhaDinamica;
+    int qntd; 
+}pilhaDinamica;                    //cria a estrutura da pilha
 
 void init(pilhaDinamica *p){
-    p->topo = NULL;
+    p->topo = NULL;                      //inicializa a pilha
     p->qntd = 0;
 }
 
-int size(pilhaDinamica p){
+int size(pilhaDinamica p){               //retorna o tamanho da pilha
     return (p.qntd);
 }
 
-bool stackEmpty(pilhaDinamica p){
+bool stackEmpty(pilhaDinamica p){       //verifica se a pilha está vazia
     if(p.qntd == 0) {
     return(true);
     }
@@ -31,14 +31,14 @@ bool stackEmpty(pilhaDinamica p){
 
 void push(pilhaDinamica *p, int ch){
     no* aux=NULL;
-    aux = (no*)malloc(sizeof(no));
+    aux = (no*)malloc(sizeof(no));           //empilha um elemento
     aux->no=ch;
     aux->prox=p->topo;
     p->topo=aux;
     p->qntd++;
 }
 
-void pop(pilhaDinamica *p){
+void pop(pilhaDinamica *p){                 //desempilha um elemento
     no *aux;
     aux = p->topo;
     p->topo = p->topo->prox;
@@ -46,7 +46,7 @@ void pop(pilhaDinamica *p){
     p->qntd--;
 }
 
-void destroy(pilhaDinamica *p){
+void destroy(pilhaDinamica *p){          //destroi a pilha
     while (p->qntd != 0){
         pop(p);
     }
@@ -58,10 +58,10 @@ void show(pilhaDinamica p){
     while(aux != NULL){
         printf("%d ", aux->no);
         aux = aux->prox;
-    }
+    }                             //mostra os elementos da pilha
 }
 
-int fibonacci(int n){
+int fibonacci(int n){               //função que calcula o fibonacci
     if(n== 1){
         return 0;
     }
@@ -78,15 +78,15 @@ int main(void){
 
     printf("Digite um valor para a sequencia de fibonacci ente 5 e 20:");
     scanf("%d", &n);
-    if (n < 5 || n > 20){
+    if (n < 5 || n > 20){                   //verifica se o valor está entre 5 e 20
         printf("Valor invalido");
         return 0;
     }
-    for(int i = 1; i <= n; i++){
+    for(int i = 1; i <= n; i++){                //empilha os valores da sequencia
         push(&stack, fibonacci(i));
     }
     printf("A quantidade será %d\n", size(stack));
-    show(stack);
+    show(stack);               //mostra os valores da pilha
     printf("\n");
     return 0;
 }
