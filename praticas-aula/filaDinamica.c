@@ -15,13 +15,12 @@ typedef struct filaDinamica_st {
 } FilaDinamica_t;
 
 void init(FilaDinamica_t *fila){
-    FilaDinamica_t *fila = (FilaDinamica_t *) malloc(sizeof(FilaDinamica_t));
     fila->inicio = NULL;
     fila->fim = NULL;
     fila->qtd = 0;
 }
 
-void isEmpty(FilaDinamica_t *fila){
+bool isEmpty(FilaDinamica_t *fila){
     if(fila->qtd == 0){
         return true;
     }else{
@@ -30,12 +29,10 @@ void isEmpty(FilaDinamica_t *fila){
 }
 
 void push(FilaDinamica_t *fila, int valor){
-    printf("Digite o valor a ser inserido: ");
-    scanf("%d", &valor);
     No *novo = (No *) malloc(sizeof(No));
     novo->valor = valor;
     novo->prox = NULL;
-    if(isEmpty(&fila)){
+    if(isEmpty(fila)){
         fila->inicio = novo;
         fila->fim = novo;
     }else{
@@ -45,8 +42,8 @@ void push(FilaDinamica_t *fila, int valor){
     fila->qtd++;
 }
 
-void pop(){
-    if(isEmpty(&fila)){
+void pop(FilaDinamica_t *fila){
+    if(isEmpty(fila)){
         printf("Fila vazia!");
     }else{
         No *aux = fila->inicio;
@@ -56,12 +53,31 @@ void pop(){
     }
 }
 
+void show(FilaDinamica_t *fila){
+    No *aux = fila->inicio;
+    while(aux != NULL){
+        printf("%d ", aux->valor);
+        aux = aux->prox;
+    }
+}
 
 
+int main(void){
 
+    FilaDinamica_t filazinha;
+    init(&filazinha);
+    while(1){
+        
+        push(&filazinha, 0);
+        push(&filazinha, 1);
+        push(&filazinha, 1);
+        push(&filazinha, 0);
+        push(&filazinha, 0);
+        
 
-int main(){
+        show(&filazinha);
+    }
 
-    
+    return 0;
 
 }
