@@ -55,6 +55,7 @@ int main(void){
     pilhaDinamica stack;
 
     iniciarPilha(&stack);    
+    
 
     inserirPilha(&stack, 5);
     inserirPilha(&stack, 2);
