@@ -81,36 +81,61 @@ node_t *searchNode(node_t **root, int value){
     }
 }
 
+node_t *searchFather(node_t **root, int value){
+    if(isEmpty(*root)){
+        return NULL;
+    } else {
+        if(value == (*root)->value){
+            return NULL;
+        } else if(value < (*root)->value){
+            if((*root)->left->value == value){
+                return (*root);
+            } else {
+                return searchFather(&(*root)->left, value);
+            }
+        } else {
+            if((*root)->right->value == value){
+                return (*root);
+            } else {
+                return searchFather(&(*root)->right, value);
+            }
+        }
+    }
+}
+
 bool removeNode(node_t **root, int value){
-    if(!isEmpty(*root)) return false;
-            if(value < (*root)->value){
-            removeNode(&(*root)->left, value);
+    if(isEmpty(*root)== true) return false;
+    else {
+        if(value < (*root)->value){
+            return removeNode(&(*root)->left, value);
         } else if(value > (*root)->value){
-            removeNode(&(*root)->right, value);
+            return removeNode(&(*root)->right, value);
         } else {
             if((*root)->left == NULL && (*root)->right == NULL){
                 free(*root);
                 *root = NULL;
+                return true;
             } else if((*root)->left == NULL){
                 node_t *aux = *root;
                 *root = (*root)->right;
                 free(aux);
+                return true;
             } else if((*root)->right == NULL){
                 node_t *aux = *root;
                 *root = (*root)->left;
                 free(aux);
+                return true;
             } else {
                 node_t *aux = (*root)->right;
                 while(aux->left != NULL){
                     aux = aux->left;
                 }
                 (*root)->value = aux->value;
-                removeNode(&(*root)->right, aux->value);
+                return removeNode(&(*root)->right, aux->value);
             }
         }
-    return true;
     }
-    
+}
 
 
 
@@ -134,7 +159,7 @@ int main(){
     printf("\nInOrder: ");
     inOrder(root);
     printf("\n");
-    removeNode(&root, 10);
+    removeNode(&root, 5);
     if(searchNode(&root, 5) != NULL){
         printf("Valor encontrado");
         printf("\nValor: %d", searchNode(&root, 5)->value);
