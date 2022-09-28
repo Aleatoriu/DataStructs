@@ -67,6 +67,50 @@ void fireTree(node_t **root){
     }
 }
 
+node_t *searchNode(node_t **root, int value){
+    if(isEmpty(*root)){
+        return NULL;
+    } else {
+        if(value == (*root)->value){
+            return (*root);
+        } else if(value < (*root)->value){
+            return searchNode(&(*root)->left, value);
+        } else {
+            return searchNode(&(*root)->right, value);
+        }
+    }
+}
+
+bool removeNode(node_t **root, int value){
+    if(!isEmpty(*root)) return false;
+            if(value < (*root)->value){
+            removeNode(&(*root)->left, value);
+        } else if(value > (*root)->value){
+            removeNode(&(*root)->right, value);
+        } else {
+            if((*root)->left == NULL && (*root)->right == NULL){
+                free(*root);
+                *root = NULL;
+            } else if((*root)->left == NULL){
+                node_t *aux = *root;
+                *root = (*root)->right;
+                free(aux);
+            } else if((*root)->right == NULL){
+                node_t *aux = *root;
+                *root = (*root)->left;
+                free(aux);
+            } else {
+                node_t *aux = (*root)->right;
+                while(aux->left != NULL){
+                    aux = aux->left;
+                }
+                (*root)->value = aux->value;
+                removeNode(&(*root)->right, aux->value);
+            }
+        }
+    return true;
+    }
+    
 
 
 
@@ -83,15 +127,23 @@ int main(){
     insertNode(&root, 1);
     insertNode(&root, 9);
     insertNode(&root, 10);
-    printf("\nPreOrder: ");
+    printf("\nPreOrder: "); 
     posOrder(root);
     printf("\nPosOrder: ");
     preOrder(root);
     printf("\nInOrder: ");
     inOrder(root);
     printf("\n");
+    removeNode(&root, 10);
+    if(searchNode(&root, 5) != NULL){
+        printf("Valor encontrado");
+        printf("\nValor: %d", searchNode(&root, 5)->value);
+    } else {
+        printf("\nValor não encontrado\n");
+    }
     fireTree(&root);
-    posOrder(root);
-    isEmpty(root) ? printf(" Árvore vazia ") : printf(" Árvore não vazia ");
+    isEmpty(root) ? printf("\nÁrvore vazia ") : printf("\nÁrvore não vazia ");
+    
+
     return EXIT_SUCCESS;
 }
