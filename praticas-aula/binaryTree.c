@@ -174,6 +174,24 @@ bool removeNode(node_t **root, int value){
     }
 }
 
+void maxValue(node_t *root){
+    if(root->right == NULL){
+        printf("Maior valor: %d ", root->value);
+    } else {
+        maxValue(root->right);
+    }
+}
+
+void minValue(node_t *root){
+    if(root->left == NULL){
+        printf("Menor valor: %d ", root->value);
+    } else {
+        minValue(root->left);
+    }
+}
+
+
+
 
 
 int main(){
