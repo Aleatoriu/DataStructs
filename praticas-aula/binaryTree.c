@@ -103,6 +103,38 @@ node_t *searchFather(node_t **root, int value){
     }
 }
 
+node_t* searchMax(node_t **root){  // retorna o nó com o maior valor da subárvore da esquerda
+    if(((*root) -> right) == NULL){
+        node_t *aux = (*root);
+        if((*root)-> left != NULL){
+            (*root) = (*root)->left;
+            return aux;
+        }else{
+            (*root) = NULL;
+            return aux;
+        }
+    } else {
+        return searchMax(&(*root)->right);
+    }
+}
+
+node_t *searchMin(node_t **root){  //menor numero da direita
+    if(((*root) -> left) == NULL){
+        node_t *aux = (*root);
+        if((*root)-> right != NULL){
+            (*root) = (*root)->right;
+            return aux;
+        }else{
+            (*root) = NULL;
+            return aux;
+        }
+    } else {
+        return searchMin(&(*root)->left);
+    }
+}
+
+
+
 bool removeNode(node_t **root, int value){
     if(isEmpty(*root)== true) return false;
     else {
@@ -111,28 +143,33 @@ bool removeNode(node_t **root, int value){
         } else if(value > (*root)->value){
             return removeNode(&(*root)->right, value);
         } else {
-            if((*root)->left == NULL && (*root)->right == NULL){
+            if((*root)->left == NULL && (*root)->right == NULL){ //caso 1
                 free(*root);
                 *root = NULL;
                 return true;
-            } else if((*root)->left == NULL){
+            } if((*root)->left == NULL){               //caso 2
                 node_t *aux = *root;
                 *root = (*root)->right;
                 free(aux);
                 return true;
-            } else if((*root)->right == NULL){
+            } if((*root)->right == NULL){              //caso 2
                 node_t *aux = *root;
                 *root = (*root)->left;
                 free(aux);
                 return true;
-            } else {
-                node_t *aux = (*root)->right;
-                while(aux->left != NULL){
-                    aux = aux->left;
-                }
-                (*root)->value = aux->value;
-                return removeNode(&(*root)->right, aux->value);
-            }
+            } 
+            node_t *element =searchMax(&(*root)->right);
+            element->left = (*root)->left;
+            element->right = (*root)->right;
+            node_t *aux = *root;
+            *root = element;
+            free(aux);
+            return true;        
+        }
+        if((*root)-> value > value){
+            return removeNode(&(*root)->left, value);
+        } else {
+            return removeNode(&(*root)->right, value);
         }
     }
 }
@@ -141,21 +178,16 @@ bool removeNode(node_t **root, int value){
 
 int main(){
     node_t *root = initTree();
-    insertNode(&root, 5);
-    insertNode(&root, 3);   
-    insertNode(&root, 7);
-    insertNode(&root, 2);
+    insertNode(&root, 12);
+    insertNode(&root, 16);   
     insertNode(&root, 4);
-    insertNode(&root, 6);
     insertNode(&root, 8);
-    insertNode(&root, 1);
-    insertNode(&root, 1);
-    insertNode(&root, 9);
-    insertNode(&root, 10);
-    printf("\nPreOrder: "); 
-    posOrder(root);
-    printf("\nPosOrder: ");
+    insertNode(&root, 2);
+    insertNode(&root, 6);
+    printf("\nPreOrder: ");
     preOrder(root);
+    printf("\nPosOrder: ");
+    posOrder(root);
     printf("\nInOrder: ");
     inOrder(root);
     printf("\n");
