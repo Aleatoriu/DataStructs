@@ -154,7 +154,7 @@ int dateLastVisit(pacientes_t p){
     time(&t);
     data = localtime(&t);
     int diaMeses[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
-    int ano = ((data->tm_year + 1900) - p.lastVisit.ano);    
+    int ano = ((data->tm_year + 1900) - p.lastVisit.ano) * 365;    
     int mes = 0;
     int dia = (data->tm_mday - p.lastVisit.dia);
     int subMes = ((data->tm_mon + 1) - p.lastVisit.mes); 
@@ -199,17 +199,6 @@ void locatePacientesName(lista_t *lista, char *name){
         }
         aux = aux->prox;
 
-    }
-}
-
-void showList(lista_t *lista){
-    node_t *aux = lista->head;
-    while(aux != NULL){
-        printf("Nome: %s\n", aux->value.nome);
-        printf("Sexo: %c\n", aux->value.sexo);
-        printf("Data de nascimento: %d/%d/%d\n", aux->value.dayNas.dia, aux->value.dayNas.mes, aux->value.dayNas.ano);
-        printf("Ultima consulta: %d/%d/%d\n", aux->value.lastVisit.dia, aux->value.lastVisit.mes, aux->value.lastVisit.ano);
-        aux = aux->prox;
     }
 }
 
@@ -266,10 +255,9 @@ int main(int argc, char *argv[]){
         printf("Sistema de cadastro de pacientes\n");
         printf("OPÇÕES:\n");
         printf("1 - Inserir paciente\n");
-        printf("2 - Buscar paciente\n");
-        printf("3 - Listar pacientes\n");
-        printf("4 - Salvar \n");
-        printf("5 - Sair\n");
+        printf("2 - Buscar paciente\n");;
+        printf("3 - Salvar \n");
+        printf("4 - Sair\n");
         printf("Digite a opção desejada: ");
         scanf("%d", &op);
         switch(op){
@@ -285,12 +273,9 @@ int main(int argc, char *argv[]){
                 locatePacientesName(&lista, name);
                 break;
             case 3:
-                showList(&lista);
-                break;
-            case 4:
                 saveArqs(outputMasc, outputFem, &lista);
                 break;
-            case 5:
+            case 4:
                 printf("Saindo...\n");
                 destroyList(&lista);
                 fclose(input);
