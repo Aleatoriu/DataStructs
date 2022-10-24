@@ -42,7 +42,7 @@ bool isEmpty(lista_t *lista){
     return lista->size == 0;
 }
 
-void insertNode(lista_t *lista, pacientes_t pacientes){
+void insertNode(lista_t *lista, pacientes_t pacientes){                //insere no na lista de forma ordenada
     node_t *novo = (node_t *) malloc(sizeof(node_t));
     novo->value = pacientes;
     novo->prox = NULL;
@@ -70,7 +70,7 @@ void insertNode(lista_t *lista, pacientes_t pacientes){
         aux->prox = novo;
     }
     lista->size++;
-}
+}                                                            
 
 char *lerString(FILE *f, char parada, bool* eof) {         // Lê uma string até encontrar um caractere parada
     char *linha = NULL, tmp; //variavel temporaria
@@ -103,7 +103,7 @@ char *lerString(FILE *f, char parada, bool* eof) {         // Lê uma string at�
     return linha;
 }
 
-pacientes_t splitLine(char *line, FILE *f, lista_t *lista){
+pacientes_t splitLine(char *line, FILE *f, lista_t *lista){ // Separa a linha em tokens
     pacientes_t p;
     char aux[100]; //Variavel de leitura auxiliar
     while (fgets(aux, 100, f) != NULL) { // acaba o loop ao final do arquivo
@@ -113,11 +113,11 @@ pacientes_t splitLine(char *line, FILE *f, lista_t *lista){
     return p;
 }
 
-void insertIntoList(lista_t *lista, char *line, FILE *f){
+void insertIntoList(lista_t *lista, char *line, FILE *f){         // Insere na lista
     pacientes_t p = splitLine(line, f, lista);
 }
 
-void getFileInputAndInsert(FILE *f, lista_t *lista) {                // Lê uma string até encontrar um caractere parada
+void getFileInputAndInsert(FILE *f, lista_t *lista) {                // Lê o arquivo e insere na lista
     bool eof = false;
     while (!eof) {
         char *input = lerString(f, '\n', &eof);
@@ -125,7 +125,7 @@ void getFileInputAndInsert(FILE *f, lista_t *lista) {                // Lê uma 
     }
 }
 
-FILE* openFile(char *fileName, char *mode){
+FILE* openFile(char *fileName, char *mode){                        // Abre o arquivo
     FILE *f = fopen(fileName, mode);
     if(f == NULL){
         printf("Erro ao abrir o arquivo %s ", fileName);
@@ -135,7 +135,7 @@ FILE* openFile(char *fileName, char *mode){
 }
 
 
-void destroyList(lista_t *lista){
+void destroyList(lista_t *lista){                             // Libera a lista
     node_t *aux = lista->head;
     while(aux != NULL){
         node_t *aux2 = aux->prox;
@@ -144,11 +144,11 @@ void destroyList(lista_t *lista){
     }
 }
 
-bool sexDefined(char sexo){
+bool sexDefined(char sexo){                                  // Verifica se o sexo foi definido
     return sexo == 'M' || sexo == 'F';
 }
 
-int dateLastVisit(pacientes_t p){
+int dateLastVisit(pacientes_t p){                          // faz o calculo de verificação da data da ultima visita com a data atual do pc e retorna o valor
     struct tm *data;
     time_t t;
     time(&t);
@@ -176,7 +176,7 @@ int dateLastVisit(pacientes_t p){
     return lastVisit;
 }
 
-int dayNas(pacientes_t p){
+int dayNas(pacientes_t p){                                  // faz o calculo de verificação da data de nascimento com a data atual do pc e retorna o valor
     struct tm *data;
     time_t t;
     time(&t);
@@ -186,7 +186,7 @@ int dayNas(pacientes_t p){
     return idade = (data->tm_year + 1900) - p.dayNas.ano;
 }
 
-void locatePacientesName(lista_t *lista, char *name){
+void locatePacientesName(lista_t *lista, char *name){       // Localiza o paciente pelo nome
     node_t *aux = lista->head;
     while(aux != NULL){
         if(strcmp(aux->value.nome, name) == 0){
@@ -202,7 +202,7 @@ void locatePacientesName(lista_t *lista, char *name){
     }
 }
 
-void insertManualNode(lista_t *lista){
+void insertManualNode(lista_t *lista){                     // Insere manualmente um paciente na lista
     pacientes_t manual;
     setbuf(stdin, NULL);
     printf("Digite o nome do paciente: ");
@@ -220,17 +220,17 @@ void insertManualNode(lista_t *lista){
     insertNode(lista, manual);
 }
 
-FILE *saveArqs(FILE *outputMasc, FILE *outputFem, lista_t *lista){
+FILE *saveArqs(FILE *outputMasc, FILE *outputFem, lista_t *lista){                // Salva os arquivos
     node_t *aux = lista->tail;
     node_t *aux2 = lista->head;
     while(aux != NULL){
-        if(aux->value.sexo == 'M'){
+        if(aux->value.sexo == 'M'){                               // Salva o arquivo masculino a partir da calda da lista
             fprintf(outputMasc, "<%s, ", aux->value.nome);
             fprintf(outputMasc, "%c, ", aux->value.sexo);
             fprintf(outputMasc, "%d/%d/%d, ", aux->value.dayNas.dia, aux->value.dayNas.mes, aux->value.dayNas.ano);
             fprintf(outputMasc, "%d/%d/%d>\n", aux->value.lastVisit.dia, aux->value.lastVisit.mes, aux->value.lastVisit.ano);
         }
-        if(aux2 -> value.sexo == 'F'){
+        if(aux2 -> value.sexo == 'F'){                           // Salva o arquivo feminino a partir da cabeça da lista
             fprintf(outputFem, "<%s, ", aux2->value.nome);
             fprintf(outputFem, "%c, ", aux2->value.sexo);
             fprintf(outputFem, "%d/%d/%d, ", aux2->value.dayNas.dia, aux2->value.dayNas.mes, aux2->value.dayNas.ano);
@@ -243,7 +243,7 @@ FILE *saveArqs(FILE *outputMasc, FILE *outputFem, lista_t *lista){
     return outputFem;
 }
 
-int main(int argc, char *argv[]){   
+int main(int argc, char *argv[]){                             
     lista_t lista;
     initList(&lista);
     FILE *input = openFile(argv[1], "r");
@@ -252,7 +252,7 @@ int main(int argc, char *argv[]){
     getFileInputAndInsert(input, &lista);
     int op = 0;
     while(1){
-        printf("Sistema de cadastro de pacientes\n");
+        printf("Sistema de cadastro de pacientes\n");  
         printf("OPÇÕES:\n");
         printf("1 - Inserir paciente\n");
         printf("2 - Buscar paciente\n");;
