@@ -6,6 +6,7 @@
 <Jesilaine Marilia, F, 20/7/1983, 8/10/2021>
 <Jessica Lira, F, 18/2/1994, 18/5/2020>
 <Jessica Martins, F, 18/2/1994, 18/5/2020>
+<Levorinho, F, 19/8/2002, 19/10/1766>
 <Liana Carvalho Lima, F, 20/2/1984, 18/5/2021>
 <Liana Maria Lima, F, 20/2/1984, 18/5/2021>
 <Liana Viviane Carvalho, F, 19/7/1964, 18/5/1999>
