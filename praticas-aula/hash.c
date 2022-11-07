@@ -1,0 +1,81 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
+
+#define TAM 10
+
+typedef struct noHash{
+    int chave;
+    struct noHash* prox;
+}NoHash;
+
+typedef struct hash{
+    NoHash* tabela[TAM];
+}Hash;
+
+NoHash* inicializaNoHash(int chave){
+    NoHash* no = (NoHash*) malloc(sizeof(NoHash));
+    no->chave = chave;
+    no->prox = NULL;
+    return no;
+}
+
+Hash* inicializaHash(){
+    Hash* hash = (Hash*) malloc(sizeof(Hash));
+    for(int i=0; i<TAM; i++){
+        hash->tabela[i] = NULL;
+    }
+    return hash;
+}
+
+int funcaoHash(int chave){
+    return chave%TAM;
+}
+
+void insereHash(Hash* hash, int chave){
+    int pos = funcaoHash(chave);
+    NoHash* no = inicializaNoHash(chave);
+    if(hash->tabela[pos] == NULL){
+        hash->tabela[pos] = no;
+    }else{
+        NoHash* aux = hash->tabela[pos];
+        while(aux->prox != NULL){
+            aux = aux->prox;
+        }
+        aux->prox = no;
+    }
+}
+
+void imprimeHash(Hash* hash){
+    for(int i=0; i<TAM; i++){
+        printf("Posicao %d: ", i);
+        NoHash* aux = hash->tabela[i];
+        while(aux != NULL){
+            printf("%d ", aux->chave);
+            aux = aux->prox;
+        }
+        printf("\n");
+    }
+}
+
+int main(){
+    Hash* hash = inicializaHash();
+    insereHash(hash, 100);
+    insereHash(hash, 40);
+    insereHash(hash, 6);
+    insereHash(hash, 0);
+    insereHash(hash, 17);
+    insereHash(hash, 15);
+    insereHash(hash, 4);
+    insereHash(hash, 25);
+    insereHash(hash, 63);
+    insereHash(hash, 48);
+    insereHash(hash, 96);
+    insereHash(hash, 2);
+
+    imprimeHash(hash);
+    return 0;
+    
+
+}
