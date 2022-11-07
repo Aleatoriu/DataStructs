@@ -3,7 +3,7 @@
 #include <stdbool.h>
 #include <string.h>
 
-#define TAM 10
+#define TAM 13
 
 typedef struct noHash{
     int chave;
@@ -59,6 +59,39 @@ void imprimeHash(Hash* hash){
     }
 }
 
+void removeHash(Hash* hash, int chave){
+    int pos = funcaoHash(chave);
+    NoHash* aux = hash->tabela[pos];
+    NoHash* ant = NULL;
+    while(aux != NULL && aux->chave != chave){
+        ant = aux;
+        aux = aux->prox;
+    }
+    if(aux == NULL){
+        printf("Chave nao encontrada!\n");
+    }else{
+        if(ant == NULL){
+            hash->tabela[pos] = aux->prox;
+        }else{
+            ant->prox = aux->prox;
+        }
+        free(aux);
+    }
+}
+
+void buscaHash(Hash* hash, int chave){
+    int pos = funcaoHash(chave);
+    NoHash* aux = hash->tabela[pos];
+    while(aux != NULL && aux->chave != chave){
+        aux = aux->prox;
+    }
+    if(aux == NULL){
+        printf("Chave nao encontrada!\n");
+    }else{
+        printf("Chave encontrada!\n");
+    }
+}
+
 int main(){
     Hash* hash = inicializaHash();
     insereHash(hash, 100);
@@ -73,6 +106,12 @@ int main(){
     insereHash(hash, 48);
     insereHash(hash, 96);
     insereHash(hash, 2);
+
+    imprimeHash(hash);
+
+    printf("Removendo 15...\n\n\n\n");
+    removeHash(hash, 15);
+    buscaHash(hash, 15);
 
     imprimeHash(hash);
     return 0;
