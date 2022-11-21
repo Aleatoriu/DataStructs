@@ -20,7 +20,6 @@ int main(void){
     int vetor = {10 , 30 , 41, 312 ,33, 4324 ,3424 ,5453,331,20};
     int fim = tamanho - 1;
     
-    
-
+    buscaBinaria(vetor, valor, tamanho, inicio, fim);
 
     }
