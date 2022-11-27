@@ -121,7 +121,7 @@ void preOrder(nodeAVL *tree){
 void inOrder(nodeAVL *tree){
     if(tree != NULL){
         inOrder(tree->left);
-        printf("%s %d " , tree->key, tree->page);
+        printf("%s \t %d \n" , tree->key, tree->page);
         inOrder(tree->right);
     }
 }
@@ -179,19 +179,19 @@ void systemMenu(nodeAVL **tree){
     char key[100];
     int page;
     do{
-        printf("\n\n 1 - Inserir livro na arvore AVL de livros\n" ) ;
-        printf(" 2 - Buscar livro na arvore AVL de livros\n" ) ;
-        printf(" 3 - Imprimir arvore AVL de livros em ordem\n" ) ;
+        printf("\n\n 1 - Inserir livro na arvore AVL \n" ) ;
+        printf(" 2 - Buscar livro na arvore AVL \n" ) ;
+        printf(" 3 - Imprimir arvore AVL em ordem\n" ) ;
         printf(" 4 - Sair\n" ) ;
         scanf("%d", &option);
         switch(option){
             case 1:
-                printf("Digite a chave do livro a ser inserido: " ) ;
+                printf("Digite a chave e a pagina a ser inserido: " ) ;
                 scanf("%s %d", key, &page);
                 insert(tree, key, page);
                 break;
             case 2:
-                printf("Digite a chave do livro a ser buscado: " ) ;
+                printf("Digite a chave a ser buscado: " ) ;
                 scanf("%s", key);
                 search(*tree, key);
                 break;
@@ -200,10 +200,10 @@ void systemMenu(nodeAVL **tree){
                 break; 
             case 4:
                 freeTree(*tree);
-                printf("Saindo do programa " ) ;
+                printf("Saindo do programa \n" ) ;
                 break;
             default:
-                printf("Opcao invalida " ) ;
+                printf("Opcao invalida \n" ) ;
                 break;
         }
     }while(option != 4);
@@ -214,7 +214,6 @@ int main(int argc, char *argv[]){
     nodeAVL *tree = initTree();
     openFile(&tree, argv[1]);
     systemMenu(&tree);
-    freeTree(tree);
     return EXIT_SUCCESS;
 }
 
