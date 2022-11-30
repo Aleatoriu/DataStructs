@@ -9,6 +9,62 @@ typedef struct grafoM{
     bool dirigido;
 }grafoMatriz;
 
+typedef struct no {
+    int valor;
+    struct no *prox;
+} No;
+
+typedef struct filaDinamica_st {
+    No *inicio;
+    No *fim;
+    int qtd;
+} FilaDinamica_t;
+
+void init(FilaDinamica_t *fila){
+    fila->inicio = NULL;
+    fila->fim = NULL;
+    fila->qtd = 0;
+}
+
+bool isEmpty(FilaDinamica_t *fila){
+    if(fila->qtd == 0){
+        return true;
+    }else{
+        return false;
+    }
+}
+
+void push(FilaDinamica_t *fila, int valor){
+    No *novo = (No *) malloc(sizeof(No));
+    novo->valor = valor;
+    novo->prox = NULL;
+    if(isEmpty(fila)){
+        fila->inicio = novo;
+        fila->fim = novo;
+    }else{
+        fila->fim->prox = novo;
+        fila->fim = novo;
+    }
+    fila->qtd++;
+}
+
+void pop(FilaDinamica_t *fila){
+    if(isEmpty(fila)){
+        printf("Fila vazia!");
+    }else{
+        No *aux = fila->inicio;
+        fila->inicio = fila->inicio->prox;
+        free(aux);
+        fila->qtd--;
+    }
+}
+
+void freeFila(FilaDinamica_t *fila){
+    while(!isEmpty(fila)){
+        pop(fila);
+    }
+}
+
 void startG(grafoMatriz *g, int vertices, bool dirigido){
     g->arestas = 0;
     g->dirigido = dirigido;
@@ -62,15 +118,70 @@ void removeAresta(grafoMatriz *g, int v1, int v2){
     g->arestas--;
 }
 
-void buscaProfundidade(grafoMatriz *g, int v, bool *visitados){
-    visitados[v-1] = true;
-    printf("%d ", v);
+
+void visitaDFS(grafoMatriz *g, int visitado[], int i, int status){
+    visitado[i] = status;
+    printf("[%d] \t ", i+1);
+    for(int j = 0; j < g->vertices; j++){
+        if(g->matriz[i][j] == 1 && visitado[j] == 0){
+            visitaDFS(g, visitado, j, 1);
+        }
+    }
+    visitado[i] = 2;
+}
+
+
+void dfs(grafoMatriz *g, int ini){
+    int visitado[g->vertices]; 
+    ini--;  
+    for(int i = 0; i < g->vertices; i++) visitado[i] = 0;
+    visitado[ini] = 1;
+    printf("\n [%d] \t ", ini+1);
     for(int i = 0; i < g->vertices; i++){
-        if(g->matriz[v-1][i] == 1 && !visitados[i]){
-            buscaProfundidade(g, i+1, visitados);
+        if(g->matriz[ini][i] == 1 && visitado[i] == 0){
+            visitaDFS(g, visitado, i, 1);
+        }
+    }
+    for(int i = 0; i < g->vertices; i++){
+        if(visitado[i] == 0){
+            visitaDFS(g, visitado, i, 1);
         }
     }
 }
+
+void bfs(grafoMatriz *g, int ini){
+    int visitado[g->vertices];
+    FilaDinamica_t fila;
+    init(&fila);
+    ini--;
+    bool visitados[g->vertices];
+    for(int i = 0; i < g->vertices; i++) visitados[i] = false;
+    visitados[ini] = true;
+    push(&fila, ini);
+    printf("\n [%d] \t ", ini+1);
+    do{
+        while(!isEmpty(&fila)){
+            for(int i = 0; i < g->vertices; i++){
+                if(g->matriz[fila.inicio->valor][i] == 1 && visitados[i] == false){
+                    visitados[i] = true;
+                    push(&fila, i);
+                    printf("[%d] \t ", i+1);
+                }
+            }
+            pop(&fila);
+        }
+        for(int i = 0; i < g->vertices; i++){
+            if(visitados[i] == false){
+                visitados[i] = true;
+                push(&fila, i);
+                printf("[%d] \t ", i+1);
+                break;
+            }
+        }
+    }while(!isEmpty(&fila));
+    freeFila(&fila);
+}
+
 
 void freeG(grafoMatriz *g){
     for(int i = 0; i < g->vertices; i++){
@@ -84,15 +195,16 @@ int main(){
 
     startG(&grafo, 5, true);
     insertAresta(&grafo, 1, 2);
-    insertAresta(&grafo, 1, 3);
-    insertAresta(&grafo, 2, 3);
     insertAresta(&grafo, 2, 5);
+    insertAresta(&grafo, 3, 1);
+    insertAresta(&grafo, 3, 2);
     insertAresta(&grafo, 3, 4);
     insertAresta(&grafo, 4, 5);
     printMatrizG(&grafo);
     showArestas(&grafo);
     printf(" \n ");
-    buscaProfundidade(&grafo, 1, (bool*)calloc(grafo.vertices, sizeof(bool)));
+    //dfs(&grafo, 1);
+    bfs(&grafo, 1);
     hasAresta(&grafo, 1, 2) ? printf(" \n Tem aresta ") : printf(" \n Nao tem aresta ");
     freeG(&grafo);
 
