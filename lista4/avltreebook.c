@@ -9,24 +9,24 @@ typedef struct node {
     int height; 
     struct node *left; 
     struct node *right;
-} nodeAVL;
+} nodeAVL;  // nodeAVL é um estrutura de dados que armazena uma chave, um valor e dois ponteiros para os filhos
 
 
-nodeAVL *initTree(){
+nodeAVL *initTree(){            // Inicializa a árvore
     return NULL;
 }
 
-bool isEmpty(nodeAVL **tree){
+bool isEmpty(nodeAVL **tree){ // Verifica se a árvore está vazia
     return (*tree) == NULL;
 }
 
-int height(nodeAVL *node){
+int height(nodeAVL *node){ // Retorna a altura de um nó
     if(node == NULL)
         return 0;
     return node->height;
 }
 
-int refreshHeight(nodeAVL *node){
+int refreshHeight(nodeAVL *node){       // Atualiza a altura de um nó
     if(node == NULL)
         return 0;
     int heightLeft = height(node->left);
@@ -37,8 +37,8 @@ int refreshHeight(nodeAVL *node){
         return heightRight + 1;
 }
 
-void rotateLeft(nodeAVL **node){
-    nodeAVL *aux = (*node)->right;
+void rotateLeft(nodeAVL **node){     // Rotação simples para a esquerda
+    nodeAVL *aux = (*node)->right; 
     (*node)->right = aux->left;
     aux->left = (*node);
     (*node)->height = refreshHeight(*node);
@@ -46,37 +46,37 @@ void rotateLeft(nodeAVL **node){
     (*node) = aux;
 }
 
-void rotateRight(nodeAVL **node){
+void rotateRight(nodeAVL **node){  // Rotação simples para a direita
     nodeAVL *aux = (*node)->left;
-    (*node)->left = aux->right;
+    (*node)->left = aux->right;    
     aux->right = (*node);
     (*node)->height = refreshHeight(*node);
     aux->height = refreshHeight(aux);
     (*node) = aux;
 }
 
-void rotateLeftRight(nodeAVL **node){
+void rotateLeftRight(nodeAVL **node){  // Rotação dupla para a esquerda
     rotateLeft(&(*node)->left);
     rotateRight(node);
 }
 
-void rotateRightLeft(nodeAVL **node){
+void rotateRightLeft(nodeAVL **node){  // Rotação dupla para a direita
     rotateRight(&(*node)->right);
     rotateLeft(node);
 }
 
-int balanceFactor(nodeAVL *node){
+int balanceFactor(nodeAVL *node){  // Retorna o fator de balanceamento de um nó
     if(node == NULL)
         return 0;
     return height(node->left) - height(node->right);
 }
 
-void balance(nodeAVL **node){
+void balance(nodeAVL **node){  // Balanceia a árvore
     if(balanceFactor(*node) == 2){
         if(balanceFactor((*node)->left) >= 0){
             rotateRight(node);
         }else{
-            rotateLeftRight(node);
+            rotateLeftRight(node);  
         }
     }else if(balanceFactor(*node) == -2){
         if(balanceFactor((*node)->right) <= 0){
@@ -87,7 +87,7 @@ void balance(nodeAVL **node){
     }
 }
 
-void insert(nodeAVL **tree, char *key, int page){
+void insert(nodeAVL **tree, char *key, int page){  // Insere um nó na árvore
     if((*tree) == NULL){
         (*tree) = (nodeAVL*) malloc(sizeof(nodeAVL));
         (*tree)->key = (char*) malloc((strlen(key) + 1) * sizeof(char));
